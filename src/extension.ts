@@ -51,6 +51,13 @@ export async function activate(context: vscode.ExtensionContext) {
 				switch (message.command) {
 					case "move":
 						moveToFolder(message.pathTo, message.pathFrom);
+						panel.webview.html = await updateWebview(
+							message.destinationFolderName,
+							message.destinationFolderUri,
+							message.webviewToRender,
+							panel.webview,
+							context
+						);
 						return;
 					case "search":
 						panel.webview.html = await search(message.searchTerm, panel.webview, context);
@@ -95,28 +102,42 @@ export async function activate(context: vscode.ExtensionContext) {
 						await deleteFile(
 							message.fileName,
 							message.filePath,
-							context,
-							panel,
-							folders,
-							message.setPage,
+							context
+						);
+						panel.webview.html = await updateWebview(
 							message.currentFolderName,
-							message.currentFolderPath
+							message.currentFolderPath,
+							message.webviewToRender,
+							panel.webview,
+							context
 						);
 						return;
 					case "deleteFolder":
 						await deleteFolder(
 							message.folderName,
 							message.folderPath,
-							context,
-							panel,
-							message.setPage,
-							message.currentFolderName,
-							message.currentFolderPath,
-							files
-							);	
+							context
+							);
+							panel.webview.html = await updateWebview(
+								message.currentFolderName,
+								message.currentFolderPath,
+								message.webviewToRender,
+								panel.webview,
+								context
+							);
 						return;
 					case "comment":
 						addDecoratorToLine(panel.webview, context, message.fileName, message.filePath);
+						return;
+					case "navigate":
+						panel.webview.html = await updateWebview(
+							message.destinationFolderName,
+							message.destinationFolderUri,
+							message.webviewToRender,
+							panel.webview,
+							context
+						);
+						return;
 				}
 			},
 			undefined,

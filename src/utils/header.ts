@@ -17,5 +17,5 @@ export async function header(webview: vscode.Webview, context: vscode.ExtensionC
             <link rel="stylesheet" href="${generalStyles}">
             <link rel="stylesheet" href="${codiconsUri}">
         </head>
-    `
+    `;
 }

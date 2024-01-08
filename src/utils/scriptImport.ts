@@ -10,5 +10,5 @@ export async function scriptImport(webview: vscode.Webview, context: vscode.Exte
         <script>
 	        updateTheme(${isDark});
         </script>
-    `
+    `;
 }
